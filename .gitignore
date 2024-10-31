@@ -65,4 +65,46 @@ lib/generated_plugin_registrant.dart
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
+# Useless dart files
+lib/fifth_1.dart
+lib/fifth_2_form.dart
+lib/fifth_2_gesture_and_animation.dart
+lib/first1.dart
+lib/fourth.dart
+lib/second.dart
+lib/Sinario_store.dart
+lib/subject1.dart
+lib/subject2.dart
+lib/subject3.dart
+lib/third.dart
+lib/main.dart
+
+# test directory
+
+test/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # End of https://www.toptal.com/developers/gitignore/api/flutter

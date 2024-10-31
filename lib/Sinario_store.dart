@@ -1,18 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';//가로 모드 고정 시 필요함
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/services.dart';
+import 'providers/Scenario_c_provider.dart';
+import 'package:provider/provider.dart';
+import 'providers/Scenario_Manager.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-void main(){
+String? get font => GoogleFonts.gaegu().fontFamily;
+
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeRight,
     DeviceOrientation.landscapeLeft,
   ]);
-  //가로 모드 고정, 다른 방법도 있음
 
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider<Scenario_Manager>(
+      create: (context) => Sinario_c_provider(),
+      child: const MyApp(),
+    ),
+  );
 }
+
+AudioPlayer _audioPlayer = AudioPlayer();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -20,141 +32,101 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MyHomePage(),
+      theme: ThemeData(
+        textTheme: GoogleFonts.gaeguTextTheme(),
+      ),
+      home: Scenario_Canvas(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class Scenario_Canvas extends StatefulWidget {
+  const Scenario_Canvas({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<Scenario_Canvas> createState() => _Scenario_CanvasState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-
-  List<String> right_screen = [];
-  List<String> left_screen = [];
-
-  String c_outside = "assets/c_outside.svg";
-  String c_inside = "assets/c_inside.svg";
-  String c_display = "assets/c_display.svg";
-  String c_display_empty = "assets/c_display_empty.svg";
-
-  String door_open = "assets/door_open.PNG";
-  String door_closed = "assets/door_closed.PNG";
-
-  int right_index = 0;
-  int left_index = 0;
-
+class _Scenario_CanvasState extends State<Scenario_Canvas> {
   @override
   void initState() {
     super.initState();
-
-    left_screen.add(c_outside);
-    left_screen.add(c_inside);
-    left_screen.add(c_display);
-    left_screen.add(c_display_empty);
-
-    right_screen.add(door_closed);
-    right_screen.add(door_open);
+    _audioPlayer = AudioPlayer();
+    _playBackgroundMusic();
   }
 
-  void change_right_screen() {
-    setState(() {
-      right_index = (right_index + 1) % right_screen.length;
-    });
-  }
-
-  void change_left_screen() {
-    setState(() {
-      left_index = (left_index + 1) % left_screen.length;
-    });
+  Future<void> _playBackgroundMusic() async {
+    await _audioPlayer.setReleaseMode(ReleaseMode.loop); // 음악 반복 재생 설정
+    await _audioPlayer.play(AssetSource(Provider.of<Scenario_Manager>(context, listen: false).backGroundMusic));
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      body: ListView(
+      body: Stack(
         children: [
-          Text("편의점에 들어가보자!", style: TextStyle(fontSize: 22,), textAlign: TextAlign.center,),
+          // 배경 이미지 추가
+          Positioned.fill(
+            child: Image.asset(
+              "assets/background.jpg", // 배경 이미지 파일 경로
+              fit: BoxFit.cover, // 화면에 꽉 차도록 설정
+            ),
+          ),
 
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  width: 400,
-                  height: 275,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20), // 둥근 모서리, 숫자가 클수록 더 둥글게 됨
-                    border: Border.all(
-                      color: Colors.black, // 윤곽선 색상
-                      width: 1, // 윤곽선 두께
-                    ),
-                  ),
-
-                  //============아래 child 부분 컴포넌트화 해서 계속해서 교체
-                  child: Stack(
-                    children: [
-                      SvgPicture.asset(
-                        left_screen[left_index],
-                        semanticsLabel: 'Convenience Store Icon',
-                      ),
-                      Image(image: AssetImage("assets/actor_sample.PNG")),
-                    ],
-                  ),
-                ),
-
-                Column(
+          // 위의 ListView 콘텐츠 추가
+          ListView(
+            children: [
+              Text(
+                Provider.of<Scenario_Manager>(context, listen: false).title,
+                style: TextStyle(fontSize: 22),
+                textAlign: TextAlign.center,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text("문을 터치해 보아요!", style: TextStyle(fontSize: 20),),
-                    Container(
-                      width: 300,
-                      height: 200,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20), // 둥근 모서리, 숫자가 클수록 더 둥글게 됨
-                        border: Border.all(
-                          color: Colors.black, // 윤곽선 색상
-                          width: 1, // 윤곽선 두께
-                        ),
-                      ),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              change_right_screen();
-                              change_left_screen();
-                            });
-                          },
-                          child: Image(image: AssetImage(right_screen[right_index]),
-                          )
-                      ),
+                    Consumer<Scenario_Manager>(
+                      builder: (context, sinarioProvider, child) {
+                        return Container(
+                          width: 400,
+                          height: 275,
+                          decoration: BoxDecoration(
+                            color: Color(0xfff0dff2),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: Colors.green,
+                              width: 1,
+                            ),
+                          ),
+                          child: sinarioProvider.leftScreen[sinarioProvider.index],
+                        );
+                      },
+                    ),
+                    Consumer<Scenario_Manager>(
+                      builder: (context, sinarioProvider, child) {
+                        return Container(
+                          width: 300,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            // borderRadius: BorderRadius.circular(20),
+                            color: Color(0xfff0dff2),
+                            border: Border.all(
+                              color: Colors.green,
+                              width: 1,
+                            ),
+                          ),
+                          child: sinarioProvider.rightScreen[sinarioProvider.index],
+                        );
+                      },
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 }
-
-class TEMP extends StatefulWidget {
-  const TEMP({super.key});
-
-  @override
-  State<TEMP> createState() => _TEMPState();
-}
-
-class _TEMPState extends State<TEMP> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-
