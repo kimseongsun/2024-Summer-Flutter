@@ -7,6 +7,7 @@ import '../Scenario_c_3.dart';
 import '../Scenario_c_4.dart';
 import '../Scenario_c_5.dart';
 import '../Scenario_c_6.dart';
+import '../Scenario_c_7.dart';
 
 class Sinario_c_provider extends Scenario_Manager {
 
@@ -21,7 +22,8 @@ class Sinario_c_provider extends Scenario_Manager {
     c_3_display_left(),
     c_4_display_left(),
     c_5_display_left(),
-    c_6_display_left()
+    c_6_display_left(),
+    c_7_congratuations_left(),
   ];
 
   @override
@@ -31,7 +33,8 @@ class Sinario_c_provider extends Scenario_Manager {
     c_3_display_right(),
     c_4_display_right(),
     c_5_display_right(),
-    c_6_display_right()
+    c_6_display_right(),
+    c_7_congratuations_right()
   ];
 
 

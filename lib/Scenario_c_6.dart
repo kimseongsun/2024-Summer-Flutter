@@ -33,7 +33,9 @@ class _c_6_display_leftState extends State<c_6_display_left> {
     await Future.delayed(Duration(seconds: 10));
 
     await tts.TextToSpeech("안녕히 가세요",
-        "ko-KR-Wavenet-D");
+        "ko-KR-Wavenet-C");
+
+    Provider.of<Scenario_Manager>(context, listen: false).increment_flag();
 
     await Future.delayed(Duration(seconds: 2));
 
@@ -45,6 +47,10 @@ class _c_6_display_leftState extends State<c_6_display_left> {
     await tts.TextToSpeech("잘 하셨습니다. 이제 오른쪽 화면의 문을 터치해 편의점을 나가보세요",
         "ko-KR-Wavenet-D");
 
+    Provider.of<Scenario_Manager>(context, listen: false).decrement_flag();
+    Provider.of<Scenario_Manager>(context, listen: false).increment_flag2();
+
+
     await Future.delayed(Duration(seconds: 4));
 
   }
@@ -55,11 +61,32 @@ class _c_6_display_leftState extends State<c_6_display_left> {
       body: Consumer<Scenario_Manager>(
         builder: (context, sinarioProvider, child) {
           return Center(
-            child: Stack(
-              children: [
-                Image(image: AssetImage("assets/c_exit.webp")),
-              ],
-            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20), // 원하는 경계 반경 설정
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: sinarioProvider.flag2 == 1
+                        ? Image(
+                      image: AssetImage("assets/c_exit.webp"),
+                      fit: BoxFit.cover, // 이미지가 ClipRRect 경계 내에 꽉 차도록 설정
+                    )
+                        : SizedBox.shrink(),
+                  ),
+                  Positioned.fill(
+                    child: sinarioProvider.flag == 1
+                        ? FadeInImage(
+                      placeholder: AssetImage("assets/transparent.png"), // 빈 투명 이미지
+                      image: AssetImage("assets/actor_sample.png"),
+                      fadeInDuration: Duration(seconds: 1), // 페이드 인 지속 시간
+                      fit: BoxFit.cover, // 이미지가 ClipRRect 경계 내에 꽉 차도록 설정
+                    )
+                        : SizedBox.shrink(),
+                  ),
+                ],
+              ),
+            )
+
           );
         },
       ),

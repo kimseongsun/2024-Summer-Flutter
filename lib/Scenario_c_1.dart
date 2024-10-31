@@ -18,7 +18,13 @@ class c_1_enterTheStore_left extends StatefulWidget {
 class _c_1_enterTheStore_leftState extends State<c_1_enterTheStore_left> {
   @override
   Widget build(BuildContext context) {
-    return Image(image: AssetImage("assets/c_outside.PNG"));
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20), // Container의 borderRadius와 동일하게 설정
+      child: Image(
+        image: AssetImage("assets/c_outside.PNG"),
+        fit: BoxFit.cover, // 이미지가 Container에 꽉 차도록 설정
+      ),
+    );
   }
 }
 
@@ -49,6 +55,7 @@ class _c_1_enterTheStore_rightState extends State<c_1_enterTheStore_right> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ElevatedButton(
+
         onPressed: () async {
 
           await _audioPlayer.play(AssetSource("effect_door.mp3"));

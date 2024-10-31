@@ -39,21 +39,16 @@ class _c_2_enterTheStore_leftState extends State<c_2_enterTheStore_left> {
 
     await Future.delayed(Duration(seconds: 2));
 
-    await tts.TextToSpeech("어서오세요~", "ko-KR-Wavenet-D");
+    await tts.TextToSpeech("어서오세요~", "ko-KR-Wavenet-C");
 
     await Future.delayed(Duration(seconds: 2));
 
-    await tts.TextToSpeech("편의점 직원분께서 인사를 해주셨네요. 저희도 안녕하세요라고 인사를 해볼까요? 왼쪽 화면의 버튼을 클릭해 안녕하세요라고 소리내어 말해보세요",
+    await tts.TextToSpeech("편의점 직원분께서 인사를 해주셨네요. 저희도 안녕하세요라고 인사를 해볼까요? 오른쪽 화면의 버튼을 클릭해 안녕하세요라고 소리내어 말해보세요",
         "ko-KR-Wavenet-D");
 
     await Future.delayed(Duration(seconds: 7));
 
-    await tts.TextToSpeech("잘 하셨습니다. 여기서 퀴즈. 인사를 받은 편의점 직원분의 얼굴은 어떤 표정일까요? 왼쪽 화면에 보이는 여러 얼굴들 중 하나를 선택해 터치해보세요",
-        "ko-KR-Wavenet-D");
-
-    await Future.delayed(Duration(seconds: 7));
-
-    Provider.of<Scenario_Manager>(context, listen: false).increment_flag();
+    Provider.of<Scenario_Manager>(context, listen: false).increment_flag2();
   }
 
   @override
@@ -61,25 +56,29 @@ class _c_2_enterTheStore_leftState extends State<c_2_enterTheStore_left> {
     return Consumer<Scenario_Manager>(
       builder: (context, sinarioProvider, child) {
         return Center(
-          child: Stack(
-            children: [
-              // 배경 이미지 (아래쪽에 위치)
-              Positioned.fill(
-                child: Image(
-                  image: AssetImage("assets/c_inside.PNG"),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20), // 부모의 경계 반경과 동일하게 설정
+            child: Stack(
+              children: [
+                // 배경 이미지 (아래쪽에 위치)
+                Positioned.fill(
+                  child: Image(
+                    image: AssetImage("assets/c_inside.PNG"),
+                    fit: BoxFit.cover, // 이미지가 Container에 맞도록 설정
+                  ),
                 ),
-              ),
-              // 배우 이미지 (위쪽에 위치)
-              Positioned.fill(
-                child: actors_image != ""
-                    ? FadeInImage(
-                  placeholder: AssetImage("asdf/asdf.png"), // 빈 투명 이미지
-                  image: AssetImage(actors_image),
-                  fadeInDuration: Duration(seconds: 1), // 페이드 인 지속 시간
-                )
-                    : SizedBox.shrink(),
-              ),
-            ],
+                // 배우 이미지 (위쪽에 위치)
+                Positioned.fill(
+                  child: actors_image != ""
+                      ? FadeInImage(
+                    placeholder: AssetImage("assets/transparent.png"), // 빈 투명 이미지
+                    image: AssetImage(actors_image),
+                    fadeInDuration: Duration(seconds: 1), // 페이드 인 지속 시간
+                  )
+                      : SizedBox.shrink(),
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -119,7 +118,7 @@ class _c_2_enterTheStore_rightState extends State<c_2_enterTheStore_right> {
                     },
                     child: Icon(
                       Icons.sentiment_neutral, // 중립 이모티콘
-                      size: 100,
+                      size: 90,
                       color: Colors.black,
                     ),
                   )
@@ -129,12 +128,17 @@ class _c_2_enterTheStore_rightState extends State<c_2_enterTheStore_right> {
                   alignment: Alignment.bottomLeft,
                   child: sinarioProvider.flag == 1
                       ? ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async{
+                      await _audioPlayer.play(AssetSource("effect_coorect.mp3"));
+                      await tts.TextToSpeech("잘 하셨습니다.",
+                          "ko-KR-Wavenet-D");
+                      await Future.delayed(Duration(seconds: 1));
+                      sinarioProvider.decrement_flag();
                       sinarioProvider.updateIndex();
                     },
                     child: Icon(
                       Icons.sentiment_very_dissatisfied, // 화난 이모티콘
-                      size: 100,
+                      size: 90,
                       color: Colors.black,
                     ),
                   )
@@ -144,12 +148,36 @@ class _c_2_enterTheStore_rightState extends State<c_2_enterTheStore_right> {
                   alignment: Alignment.bottomRight,
                   child: sinarioProvider.flag == 1
                       ? ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async{
+                      await _audioPlayer.play(AssetSource("effect_coorect.mp3"));
+                      await tts.TextToSpeech("잘 하셨습니다.",
+                          "ko-KR-Wavenet-D");
+                      await Future.delayed(Duration(seconds: 1));
+                      sinarioProvider.decrement_flag();
                       sinarioProvider.updateIndex();
                     },
                     child: Icon(
                       Icons.sentiment_satisfied_alt_outlined, // 만족 이모티콘
-                      size: 100,
+                      size: 90,
+                      color: Colors.black,
+                    ),
+                  )
+                      : SizedBox.shrink(),
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: sinarioProvider.flag2 == 1
+                      ? ElevatedButton(
+                    onPressed: () async{
+                      await tts.TextToSpeech("잘 하셨습니다. 여기서 퀴즈. 인사를 받은 편의점 직원분의 얼굴은 어떤 표정일까요? 왼쪽 화면에 보이는 여러 얼굴들 중 하나를 선택해 터치해보세요",
+                          "ko-KR-Wavenet-D");
+                      await Future.delayed(Duration(seconds: 7));
+                      Provider.of<Scenario_Manager>(context, listen: false).decrement_flag2();
+                      Provider.of<Scenario_Manager>(context, listen: false).increment_flag();
+                    },
+                    child: Icon(
+                      Icons.mic, // 만족 이모티콘
+                      size: 90,
                       color: Colors.black,
                     ),
                   )

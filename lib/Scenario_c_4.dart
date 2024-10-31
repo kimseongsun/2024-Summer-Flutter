@@ -33,104 +33,120 @@ class _c_4_display_leftState extends State<c_4_display_left> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Consumer<Scenario_Manager>(
-        builder: (context, sinarioProvider, child) {
-          return Center(
+    return Consumer<Scenario_Manager>(
+      builder: (context, sinarioProvider, child) {
+        return Center(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
             child: Stack(
               children: [
                 Positioned.fill(
                   child: Image(
-                    image: AssetImage("assets/c_display_empty.PNG"),
-                  ),
-                ),
-
-                Positioned.fill(
-                  child: Align(
-                      alignment: Alignment.topCenter,
-                      child: ElevatedButton(
-                          onPressed: () async{
-                            await _audioPlayer.play(AssetSource("effect_coorect.mp3"));
-                            await tts.TextToSpeech("잘 하셨습니다",
-                              "ko-KR-Wavenet-D");
-
-                          sinarioProvider.updateIndex();
-                          },
-                          child: Container(
-                            width: 50, // 원하는 너비
-                            height: 50, // 원하는 높이
-                            child: Image(
-                              image: AssetImage("assets/cookie.png"),
-                              fit: BoxFit.cover, // 이미지를 부모 크기에 맞게 조절
-                            ),
-                          )
-                      )
+                    image: AssetImage("assets/c_display_empty.png"),
+                    fit: BoxFit.cover, // 배경 이미지가 꽉 차도록 설정
                   ),
                 ),
                 Positioned.fill(
                   child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: ElevatedButton(
-                        onPressed: (){},
-                        child: Text("젤리코너"),
-                      )
+                    alignment: Alignment.topCenter,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        await _audioPlayer.play(AssetSource("effect_coorect.mp3"));
+                        await tts.TextToSpeech("잘 하셨습니다", "ko-KR-Wavenet-D");
+                        sinarioProvider.updateIndex();
+                      },
+                      child: Container(
+                        width: 50, // 원하는 너비
+                        height: 50, // 원하는 높이
+                        child: Image(
+                          image: AssetImage("assets/cookie.png"),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 Positioned.fill(
                   child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: ElevatedButton(
-                          onPressed: () async{    await tts.TextToSpeech("잘 하셨습니다",
-                              "ko-KR-Wavenet-D");},
-                          child: Text("아이스크림 코너")
-                      )
+                    alignment: Alignment.center,
+                    child: ElevatedButton(
+                      onPressed: () async{
+                        await _audioPlayer.play(AssetSource("effect_coorect.mp3"));
+                        await tts.TextToSpeech("잘 하셨습니다", "ko-KR-Wavenet-D");
+                        sinarioProvider.updateIndex();
+                      },
+                      child: Container(
+                        width: 50, // 원하는 너비
+                        height: 50, // 원하는 높이
+                        child: Image(
+                          image: AssetImage("assets/chips.png"),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 Positioned.fill(
                   child: Align(
-                      alignment: Alignment.centerRight,
-                      child: ElevatedButton(
-                          onPressed: () async{    await tts.TextToSpeech("잘 하셨습니다",
-                              "ko-KR-Wavenet-D");},
-                          child: Text("라면 코너")
-                      )
+                    alignment: Alignment(100, 100),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        await _audioPlayer.play(AssetSource("effect_coorect.mp3"));
+                        await tts.TextToSpeech("잘 하셨습니다", "ko-KR-Wavenet-D");
+                        sinarioProvider.updateIndex();
+                      },
+                      child: Container(
+                        width: 50, // 원하는 너비
+                        height: 50, // 원하는 높이
+                        child: Image(
+                          image: AssetImage("assets/chocolate.png"),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 Positioned.fill(
                   child: Align(
-                      alignment: Alignment.topRight,
-                      child: ElevatedButton(
-                          onPressed: () async{    await tts.TextToSpeech("잘 하셨습니다",
-                              "ko-KR-Wavenet-D");},
-                          child: Text("음료수 코너")
-                      )
+                    alignment: Alignment.centerRight,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        await _audioPlayer.play(AssetSource("effect_coorect.mp3"));
+                        await tts.TextToSpeech("잘 하셨습니다", "ko-KR-Wavenet-D");
+                        sinarioProvider.updateIndex();
+                      },
+                      child: Container(
+                        width: 50, // 원하는 너비
+                        height: 50, // 원하는 높이
+                        child: Image(
+                          image: AssetImage("assets/pop_corn.png"),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 Positioned.fill(
                   child: Align(
-                      alignment: Alignment.center,
-                      child: ElevatedButton(
-                          onPressed: () async{    await tts.TextToSpeech("잘 하셨습니다",
-                              "ko-KR-Wavenet-D");},
-                          child: Text("생필품 코너")
-                      )
+                    alignment: Alignment.topRight,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        await _audioPlayer.play(AssetSource("effect_coorect.mp3"));
+                        await tts.TextToSpeech("잘 하셨습니다", "ko-KR-Wavenet-D");
+                        sinarioProvider.updateIndex();
+                      },
+                      child: Container(
+                        width: 50, // 원하는 너비
+                        height: 50, // 원하는 높이
+                        child: Image(
+                          image: AssetImage("assets/pererro.png"),
+                          fit: BoxFit.cover, // 이미지를 부모 크기에 맞게 조절
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                Positioned.fill(
-                  child: sinarioProvider.flag == 1
-                      ? FadeInImage(
-                    placeholder: AssetImage("asdf/asdf.png"), // 빈 투명 이미지
-                    image: AssetImage("assets/actor_sample.png"),
-                    fadeInDuration: Duration(seconds: 1), // 페이드 인 지속 시간
-                  )
-                      : SizedBox.shrink(),
-                ),
-
               ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
@@ -146,12 +162,7 @@ class _c_4_display_rightState extends State<c_4_display_right> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          onPressed: (){},
-          child: Text(""),
-        ),
-      ),
+      body: SizedBox.shrink(),
     );
   }
 }

@@ -24,6 +24,7 @@ abstract class Scenario_Manager extends ChangeNotifier {
   void updateIndex() {
     index++;
     notifyListeners();
+    print("index updated!!!! INDEX: $index");
   }
 
   void addStepInfo(String question, String response) {
