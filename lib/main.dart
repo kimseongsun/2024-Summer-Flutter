@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'providers/Scenario_c_provider.dart';
 import 'package:provider/provider.dart';
 import 'providers/Scenario_Manager.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 void main(){
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,8 +23,12 @@ void main(){
   );
 }
 
+AudioPlayer _audioPlayer = AudioPlayer();
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +46,18 @@ class Scenario_Canvas extends StatefulWidget {
 }
 
 class _Scenario_CanvasState extends State<Scenario_Canvas> {
+
+  void initState() {
+    super.initState();
+    _audioPlayer = AudioPlayer();
+    _playBackgroundMusic();
+  }
+
+
+  Future<void> _playBackgroundMusic() async {
+    await _audioPlayer.setReleaseMode(ReleaseMode.loop); // 음악 반복 재생 설정
+    await _audioPlayer.play(AssetSource(Provider.of<Scenario_Manager>(context, listen: false).backGroundMusic));
+  }
 
   @override
   Widget build(BuildContext context) {
